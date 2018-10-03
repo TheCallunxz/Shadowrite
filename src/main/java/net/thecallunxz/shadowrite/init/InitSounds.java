@@ -13,6 +13,8 @@ import net.thecallunxz.shadowrite.Reference;
 @ObjectHolder(Reference.MOD_ID)
 public final class InitSounds {
 	
+	public static final SoundEvent whisper = register("whisper");
+	
 	public static SoundEvent register(String name) {
 		final ResourceLocation loc = new ResourceLocation(Reference.MOD_ID, name);
 		return new SoundEvent(loc).setRegistryName(loc);
@@ -25,12 +27,11 @@ public final class InitSounds {
 			final IForgeRegistry<SoundEvent> registry = event.getRegistry();
 			
 			final SoundEvent[] sounds = {
-					
+					whisper,
 			};
 
 			registry.registerAll(sounds);
 			
 		}
 	}
-	
 }

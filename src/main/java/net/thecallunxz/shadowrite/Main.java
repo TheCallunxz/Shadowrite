@@ -18,7 +18,7 @@ public class Main {
 	@Instance(Reference.MOD_ID)
 	public static Main instance;
 	
-	public static final CreativeTabs tabWOR = new CreativeTabs("Shadowrite") {
+	public static final CreativeTabs tabShadow = new CreativeTabs("Shadowrite") {
 		@Override
 		public ItemStack getTabIconItem() {
 			return Items.APPLE.getDefaultInstance();

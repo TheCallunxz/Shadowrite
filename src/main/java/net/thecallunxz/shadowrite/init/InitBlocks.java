@@ -19,10 +19,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.thecallunxz.shadowrite.ItemModelProvider;
 import net.thecallunxz.shadowrite.Reference;
+import net.thecallunxz.shadowrite.blocks.BlockShadowriteOre;
 
 
 @ObjectHolder(Reference.MOD_ID)
 public class InitBlocks {
+	
+	public static final BlockShadowriteOre shadowrite_ore = new BlockShadowriteOre("shadowrite_ore");
 	
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 	public static class RegistrationHandler {
@@ -38,7 +41,7 @@ public class InitBlocks {
 			final IForgeRegistry<Block> registry = event.getRegistry();
 			
 			final Block[] blocks = {
-					
+					shadowrite_ore,
 			};
 
 			registry.registerAll(blocks);
@@ -51,8 +54,7 @@ public class InitBlocks {
 		@SubscribeEvent
 		public static void registerItemBlocks(final RegistryEvent.Register<Item> event) {
 			final ItemBlock[] items = {
-					
-					
+					new ItemBlock(shadowrite_ore),
 			};
 			
 			
