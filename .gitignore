@@ -7,7 +7,6 @@
 *.iml
 *.ipr
 *.iws
-/.metadata/*
 *.eml
 /run/
 usernamecache.json
