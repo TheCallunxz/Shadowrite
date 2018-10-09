@@ -23,12 +23,12 @@ public class EntityAIFlyForward extends EntityAIBase {
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		return true;
+		return !entitycommon.onGround;
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		return true;
+		return !entitycommon.onGround;
 	}
 
 	@Override

@@ -61,10 +61,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.thecallunxz.shadowrite.entities.ai.EntityAIChangeStance;
 import net.thecallunxz.shadowrite.entities.ai.EntityAIFlyForward;
 
 public class EntityShadowWarrior extends EntityMob {
-	private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.<Boolean>createKey(EntityShadowWarrior.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> SHIELD_OUT = EntityDataManager.<Boolean>createKey(EntityShadowWarrior.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> WARRIORTIER = EntityDataManager.<Integer>createKey(EntityShadowWarrior.class, DataSerializers.VARINT);
 		
 	
@@ -72,7 +73,8 @@ public class EntityShadowWarrior extends EntityMob {
 		super(worldIn);
 		this.tasks.addTask(1, new EntityAISwimming(this));
 		this.tasks.addTask(2, new EntityAIFlyForward(worldIn, this));
-		this.tasks.addTask(3, new AIAttack(this));
+		this.tasks.addTask(3, new EntityAIChangeStance(worldIn, this));
+		this.tasks.addTask(4, new AIAttack(this));
 		this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
 		this.tasks.addTask(7, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityShadowWarrior.class}));
@@ -100,7 +102,7 @@ public class EntityShadowWarrior extends EntityMob {
 
 	protected void entityInit() {
 		super.entityInit();
-		this.dataManager.register(SWINGING_ARMS, Boolean.valueOf(false));
+		this.dataManager.register(SHIELD_OUT, Boolean.valueOf(false));
 		this.dataManager.register(WARRIORTIER, Integer.valueOf(0));
 	}
 	
@@ -122,7 +124,7 @@ public class EntityShadowWarrior extends EntityMob {
 				this.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, new ItemStack(Items.SHIELD));
 			}
 			this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1D);
-			this.experienceValue = 3;
+			this.experienceValue = 6;
 			break;
 		case 1:
 			this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.STONE_SWORD));
@@ -137,8 +139,8 @@ public class EntityShadowWarrior extends EntityMob {
 				this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(Items.LEATHER_CHESTPLATE));
 				armour += 2D;
 			}
-			this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2D);
-			this.experienceValue = 5;
+			this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1D);
+			this.experienceValue = 10;
 			break;
 		case 2:
 			this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
@@ -153,8 +155,8 @@ public class EntityShadowWarrior extends EntityMob {
 				this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(Items.IRON_CHESTPLATE));
 				armour += 3D;
 			}
-			this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3D);
-			this.experienceValue = 7;
+			this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2D);
+			this.experienceValue = 14;
 			break;
 		case 3:
 			this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
@@ -169,8 +171,8 @@ public class EntityShadowWarrior extends EntityMob {
 				this.setItemStackToSlot(EntityEquipmentSlot.CHEST, new ItemStack(Items.DIAMOND_CHESTPLATE));
 				armour += 4D;
 			}
-			this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4D);
-			this.experienceValue = 10;
+			this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2D);
+			this.experienceValue = 20;
 			break;
 		}
 		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2D + armour);
@@ -188,6 +190,9 @@ public class EntityShadowWarrior extends EntityMob {
     {
         if (super.attackEntityFrom(source, amount))
         {
+        	if(!isShieldOut() && this.getHeldItemOffhand().getItem() == Items.SHIELD) {
+        		this.setShieldOut(true);
+        	}
             return true;
         }
         else
@@ -228,13 +233,12 @@ public class EntityShadowWarrior extends EntityMob {
 		this.dataManager.set(WARRIORTIER, Integer.valueOf(tier));
 	}
 
-	@SideOnly(Side.CLIENT)
-	public boolean isSwingingArms() {
-		return ((Boolean) this.dataManager.get(SWINGING_ARMS)).booleanValue();
+	public boolean isShieldOut() {
+		return ((Boolean) this.dataManager.get(SHIELD_OUT)).booleanValue();
 	}
 	
-	public void setSwingingArms(boolean swingingArms) {
-		this.dataManager.set(SWINGING_ARMS, Boolean.valueOf(swingingArms));
+	public void setShieldOut(boolean swingingArms) {
+		this.dataManager.set(SHIELD_OUT, Boolean.valueOf(swingingArms));
 	}
 
 	static class AIAttack extends EntityAIAttackMelee {
@@ -246,11 +250,11 @@ public class EntityShadowWarrior extends EntityMob {
 		protected void checkAndPerformAttack(EntityLivingBase living, double number) {
 			Random rand = new Random();
 			double d0 = this.getAttackReachSqr(living);
-			if (number <= (d0 * 0.75) && this.attackTick <= 0) {
+			if (number <= (d0 * 0.75) && this.attackTick <= 0 && !((EntityShadowWarrior) this.attacker).isShieldOut()) {
 				this.attackTick = 20;
 				this.attacker.swingArm(EnumHand.MAIN_HAND);
 				living.attackEntityFrom(DamageSource.causeMobDamage(this.attacker), (float) this.attacker.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue());
-				living.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 200, 0, true, false));
+				living.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 0, true, false));
 			}
 		}
 

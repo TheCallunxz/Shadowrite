@@ -1,5 +1,6 @@
 package net.thecallunxz.shadowrite.render;
 
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.model.ModelZombie;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.layers.LayerSpiderEyes;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.thecallunxz.shadowrite.entities.EntityShadowWarrior;
@@ -22,14 +24,14 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderShadowWarrior extends RenderBiped<EntityShadowWarrior> {
+public class RenderShadowWarrior extends RenderLiving<EntityShadowWarrior> {
 	public static final Factory FACTORY = new Factory();
 	
 	private static final ResourceLocation mobTexture = new ResourceLocation("shadowrite:textures/entity/mobs/shadowwarrior.png");
 
 	public RenderShadowWarrior(RenderManager rendermanagerIn) {
 		super(rendermanagerIn, new ModelShadowEntity(), 0F);
-		this.addLayer(new LayerHeldItem(this));
+		this.addLayer(new LayerCustomHeldItem(this));
 		LayerBipedArmor layerbipedarmor = new LayerBipedArmor(this)
         {
             protected void initArmor()
@@ -39,6 +41,10 @@ public class RenderShadowWarrior extends RenderBiped<EntityShadowWarrior> {
             }
         };
         this.addLayer(layerbipedarmor);
+	}
+	
+	public ModelShadowEntity getMainModel() {
+		return (ModelShadowEntity) super.getMainModel();
 	}
 
 	@Override
@@ -53,9 +59,19 @@ public class RenderShadowWarrior extends RenderBiped<EntityShadowWarrior> {
         GlStateManager.enableNormalize();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        this.setModelVisibilities(entity);
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 		GlStateManager.disableBlend();
         GlStateManager.disableNormalize();
+	}
+	
+	private void setModelVisibilities(EntityShadowWarrior entity) {
+		ModelShadowEntity modelplayer = this.getMainModel();
+		if(entity.isShieldOut()) {
+			modelplayer.leftArmPose = ModelBiped.ArmPose.BLOCK;
+		}else{
+			modelplayer.leftArmPose = ModelBiped.ArmPose.EMPTY;
+		}
 	}
 	
 	protected float getDeathMaxRotation(EntityShadowWarrior entityLivingBaseIn)
