@@ -14,11 +14,12 @@ import net.thecallunxz.shadowrite.ItemModelProvider;
 import net.thecallunxz.shadowrite.Reference;
 import net.thecallunxz.shadowrite.blocks.BlockShadowriteOre;
 import net.thecallunxz.shadowrite.items.ItemBase;
+import net.thecallunxz.shadowrite.items.ItemFloating;
 
 @ObjectHolder(Reference.MOD_ID)
 public class InitItems {
 
-	public static final ItemBase shadowrite_singularity = new ItemBase("shadowrite_singularity");
+	public static final ItemFloating shadowrite_singularity = new ItemFloating("shadowrite_singularity");
 	
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 	public static class RegistrationHandler {

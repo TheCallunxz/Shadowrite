@@ -3,3 +3,5 @@ itemGroup.Shadowrite=Shadowrite
 tile.shadowrite_ore.name=Shadowrite Ore
 
 item.shadowrite_singularity.name=Shadowrite Singularity
+
+message.player.shadowsreleased=The ancient shadows of past horrors have been released!

@@ -47,4 +47,22 @@ public class WorldDataShadowrite extends WorldSavedData {
 		nbt.setBoolean("shadowsReleased", shadowsReleased);
 		return nbt;
 	}
+	
+	public boolean isShadowsReleased() {
+		return shadowsReleased;
+	}
+	
+	public void setShadowsReleased(boolean shadowsReleased) {
+		this.shadowsReleased = shadowsReleased;
+		markDirty();
+	}
+
+	public boolean isInEvent() {
+		return inEvent;
+	}
+
+	public void setInEvent(boolean inEvent) {
+		this.inEvent = inEvent;
+		markDirty();
+	}
 }
