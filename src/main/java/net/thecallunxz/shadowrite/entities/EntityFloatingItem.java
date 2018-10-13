@@ -65,10 +65,10 @@ public class EntityFloatingItem extends EntityItem
         this.lifespan = (stack.getItem() == null ? 6000 : stack.getItem().getEntityLifespan(stack, worldIn));
     }
     
-    public EntityFloatingItem(EntityItem entityOrig) {
+    public EntityFloatingItem(EntityItem entityOrig) {  
     	this(entityOrig.getEntityWorld(), entityOrig.posX, entityOrig.posY, entityOrig.posZ, entityOrig.getItem());
     	this.motionX = entityOrig.motionX;
-    	this.motionY = entityOrig.motionY - 0.2;
+    	this.motionY = 0.0D;
     	this.motionZ = entityOrig.motionZ;
     }
 

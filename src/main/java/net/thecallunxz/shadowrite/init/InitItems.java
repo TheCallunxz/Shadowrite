@@ -15,11 +15,17 @@ import net.thecallunxz.shadowrite.Reference;
 import net.thecallunxz.shadowrite.blocks.BlockShadowriteOre;
 import net.thecallunxz.shadowrite.items.ItemBase;
 import net.thecallunxz.shadowrite.items.ItemFloating;
+import net.thecallunxz.shadowrite.items.ItemShadowriteTorch;
 
 @ObjectHolder(Reference.MOD_ID)
 public class InitItems {
 
-	public static final ItemFloating shadowrite_singularity = new ItemFloating("shadowrite_singularity");
+	public static final ItemFloating shadowrite_singularity = new ItemFloating("shadowrite_singularity", 2.5D);
+	public static final ItemBase shadow_fabric = new ItemBase("shadow_fabric");
+	public static final ItemBase shadow_cloth = new ItemBase("shadow_cloth");
+	public static final ItemShadowriteTorch shadowrite_torch = new ItemShadowriteTorch("shadowrite_torch");
+	public static final ItemFloating shadowrite_gem = new ItemFloating("shadowrite_gem", 1D);
+	public static final ItemFloating shadowrite_core = new ItemFloating("shadowrite_core", 1D);
 	
 	@Mod.EventBusSubscriber(modid = Reference.MOD_ID)
 	public static class RegistrationHandler {
@@ -30,6 +36,11 @@ public class InitItems {
 			
 			final Item[] items = {
 					shadowrite_singularity,
+					shadowrite_torch,
+					shadow_fabric,
+					shadow_cloth,
+					shadowrite_gem,
+					shadowrite_core,
 			};
 			
 			final IForgeRegistry<Item> registry = event.getRegistry();

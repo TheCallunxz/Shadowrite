@@ -1,7 +1,10 @@
 itemGroup.Shadowrite=Shadowrite
 
+entity.shadowwarrior.name=Shadowrite Warrior
+
 tile.shadowrite_ore.name=Shadowrite Ore
 
 item.shadowrite_singularity.name=Shadowrite Singularity
 
 message.player.shadowsreleased=The ancient shadows of past horrors have been released!
+message.player.darkmoon=Tonight the moon is away and more shadows come out to play!

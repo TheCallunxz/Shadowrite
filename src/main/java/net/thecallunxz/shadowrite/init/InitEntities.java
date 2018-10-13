@@ -1,10 +1,16 @@
 package net.thecallunxz.shadowrite.init;
 
+import java.util.Collection;
+
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Biomes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.thecallunxz.shadowrite.Main;
@@ -16,15 +22,23 @@ import net.thecallunxz.shadowrite.render.RenderShadowWarrior;
 
 
 public class InitEntities {
-	
+
 	public static void register() {
 		registerEntity(EntityFloatingItem.class, "floatingitem", 64, 1, true, false);
 		
 		registerEntity(EntityShadowWarrior.class, "shadowwarrior", 80, 3, false, true);
+		
+		Collection<Biome> biomesList = ForgeRegistries.BIOMES.getValuesCollection();
+		
+		Biome[] biomes = new Biome[biomesList.size()];
+		biomes = biomesList.toArray(biomes);
+		
+		EntityRegistry.addSpawn(EntityShadowWarrior.class, 500, 1, 1, EnumCreatureType.MONSTER, biomes);
     }
 	
 	@SideOnly(Side.CLIENT)
     public static void initModels() {
+		RenderingRegistry.registerEntityRenderingHandler(EntityFloatingItem.class, RenderFloatingItem.FACTORY);
 		RenderingRegistry.registerEntityRenderingHandler(EntityShadowWarrior.class, RenderShadowWarrior.FACTORY);
     }
 	

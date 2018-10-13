@@ -20,6 +20,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.thecallunxz.shadowrite.entities.EntityFloatingItem;
+import net.thecallunxz.shadowrite.items.ItemFloating;
 
 @SideOnly(Side.CLIENT)
 public class RenderFloatingItem extends Render<EntityFloatingItem>
@@ -56,11 +57,20 @@ public class RenderFloatingItem extends Render<EntityFloatingItem>
 
             if (flag || this.renderManager.options != null)
             {
-                float f3 = (((float)itemIn.getAge() + p_177077_8_) / 2.0F + itemIn.hoverStart) * (180F / (float)Math.PI);
+            	float f3 = (((float)itemIn.getAge() + p_177077_8_) / 2.0F + itemIn.hoverStart) * (180F / (float)Math.PI);
+            	if(item instanceof ItemFloating) {
+            		if(((ItemFloating) item).scaleSize == 1D) {
+            			f3 = (((float)itemIn.getAge() + p_177077_8_) / 20.0F + itemIn.hoverStart) * (180F / (float)Math.PI);
+            		}
+            	}
+                
                 GlStateManager.rotate(f3, 0.0F, 1.0F, 0.0F);
             }
+
+            if(item instanceof ItemFloating) {
+            	GlStateManager.scale(((ItemFloating) item).scaleSize, ((ItemFloating) item).scaleSize, ((ItemFloating) item).scaleSize);
+            }
             
-            GlStateManager.scale(2.5, 2.5, 2.5);
             
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             return i;

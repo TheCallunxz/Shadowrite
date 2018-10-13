@@ -8,6 +8,8 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemShield;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.Vec3d;
@@ -36,7 +38,7 @@ public class EntityAIChangeStance extends EntityAIBase {
 
 	@Override
 	public void updateTask() {
-		if(entitycommon.getHeldItemOffhand().getItem() == Items.SHIELD) {
+		if(entitycommon.getHeldItemOffhand().getItem() instanceof ItemShield) {
 			if(entitycommon.getAttackTarget() != null) {
 				if(entitycommon.getDistance(entitycommon.getAttackTarget()) < 5) {
 					if(entitycommon.ticksExisted % 60 == 0) {
@@ -50,7 +52,7 @@ public class EntityAIChangeStance extends EntityAIBase {
 							entitycommon.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1D);
 						}
 					}
-				}else if(entitycommon.getAttackTarget().getHeldItemMainhand().getItem() == Items.BOW) {
+				}else if(entitycommon.getAttackTarget().getHeldItemMainhand().getItem() instanceof ItemBow) {
 					entitycommon.setShieldOut(true);
 					entitycommon.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
 					entitycommon.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1D);

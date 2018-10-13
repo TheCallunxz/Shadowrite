@@ -16,6 +16,7 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.thecallunxz.shadowrite.entities.EntityShadowWarrior;
 import net.thecallunxz.shadowrite.models.ModelShadowEntity;
@@ -59,8 +60,9 @@ public class RenderShadowWarrior extends RenderLiving<EntityShadowWarrior> {
         GlStateManager.enableNormalize();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+        float f1 = MathHelper.sin(((float)entity.ticksExisted + partialTicks) / 7.5F + entity.hoverStart) * 0.2F + 0.1F;
         this.setModelVisibilities(entity);
-		super.doRender(entity, x, y, z, entityYaw, partialTicks);
+		super.doRender(entity, x, y + f1, z, entityYaw, partialTicks);
 		GlStateManager.disableBlend();
         GlStateManager.disableNormalize();
 	}

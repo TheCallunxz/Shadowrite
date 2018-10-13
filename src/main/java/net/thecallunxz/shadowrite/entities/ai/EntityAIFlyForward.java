@@ -10,6 +10,7 @@ import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.thecallunxz.shadowrite.entities.EntityShadowWarrior;
 
 public class EntityAIFlyForward extends EntityAIBase {
 	private World world;
@@ -42,8 +43,18 @@ public class EntityAIFlyForward extends EntityAIBase {
 					
 					Vec3d vecPull = victimVec.subtract(commonVec).normalize();
 					
-					entitycommon.motionX = vecPull.x * 0.2;
-					entitycommon.motionZ = vecPull.z * 0.2;
+					if(entitycommon instanceof EntityShadowWarrior) {
+						if(((EntityShadowWarrior) entitycommon).isShieldOut()) {
+							entitycommon.motionX = vecPull.x * 0.1;
+							entitycommon.motionZ = vecPull.z * 0.1;
+						}else {
+							entitycommon.motionX = vecPull.x * 0.2;
+							entitycommon.motionZ = vecPull.z * 0.2;
+						}
+					}else {
+						entitycommon.motionX = vecPull.x * 0.2;
+						entitycommon.motionZ = vecPull.z * 0.2;
+					}
 				}
 			}
 		}

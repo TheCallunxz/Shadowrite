@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Predicate;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,6 +35,8 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemShield;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -50,6 +53,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -58,16 +63,20 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.thecallunxz.shadowrite.entities.ai.EntityAIChangeStance;
 import net.thecallunxz.shadowrite.entities.ai.EntityAIFlyForward;
+import net.thecallunxz.shadowrite.init.InitLootTables;
+import net.thecallunxz.shadowrite.init.InitSounds;
+import net.thecallunxz.shadowrite.proxy.CommonProxy;
 
 public class EntityShadowWarrior extends EntityMob {
 	private static final DataParameter<Boolean> SHIELD_OUT = EntityDataManager.<Boolean>createKey(EntityShadowWarrior.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Integer> WARRIORTIER = EntityDataManager.<Integer>createKey(EntityShadowWarrior.class, DataSerializers.VARINT);
-		
+	public float hoverStart;
 	
 	public EntityShadowWarrior(World worldIn) {
 		super(worldIn);
@@ -80,7 +89,7 @@ public class EntityShadowWarrior extends EntityMob {
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] {EntityShadowWarrior.class}));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, false));
         this.setTier(world.rand.nextInt(4));
-        
+        this.hoverStart = (float)(Math.random() * Math.PI * 2.0D);
 	}
 	
 	@Nullable
@@ -108,7 +117,13 @@ public class EntityShadowWarrior extends EntityMob {
 	
 	public void onLivingUpdate()
     {
+		if (isFullDay(this.world) && !this.world.isRemote)
+        {
+			this.setDead();
+        }
+		
         super.onLivingUpdate();
+        
         if (!this.onGround && this.motionY < 0.0D)
         {
             this.motionY *= 0.4D;
@@ -176,22 +191,40 @@ public class EntityShadowWarrior extends EntityMob {
 			break;
 		}
 		this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2D + armour);
-		this.setDropChance(EntityEquipmentSlot.MAINHAND, 0.0F);
-		this.setDropChance(EntityEquipmentSlot.OFFHAND, 0.0F);
-		this.setDropChance(EntityEquipmentSlot.HEAD, 0.0F);
-		this.setDropChance(EntityEquipmentSlot.CHEST, 0.0F);
 	}
 
     public void fall(float distance, float damageMultiplier)
     {
     }
     
+    @Nullable
+    protected ResourceLocation getLootTable()
+    {
+        return InitLootTables.shadowloot;
+    }
+    
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
+    	if(isShieldOut()) {
+    		this.world.playSound((EntityPlayer)null, this.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.HOSTILE, 1F, 1F);
+    		if(!this.world.isRemote) {
+    			if(this.getAttackTarget() != null) {
+    				if(world.rand.nextInt(3) == 0 && !(this.getAttackTarget().getHeldItemMainhand().getItem() instanceof ItemBow)) {
+            			this.setShieldOut(false);
+            			this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
+            			this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0D);
+            		}
+    			}
+    		}
+    		return false;
+    	}
+    	
         if (super.attackEntityFrom(source, amount))
         {
-        	if(!isShieldOut() && this.getHeldItemOffhand().getItem() == Items.SHIELD) {
+        	if(!isShieldOut() && this.getHeldItemOffhand().getItem() instanceof ItemShield) {
         		this.setShieldOut(true);
+        		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
+        		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1D);
         	}
             return true;
         }
@@ -200,7 +233,7 @@ public class EntityShadowWarrior extends EntityMob {
             return false;
         }
     }
-
+    
 	@Override
 	public int getMaxFallHeight() {
 		return 100;
@@ -209,10 +242,19 @@ public class EntityShadowWarrior extends EntityMob {
 	protected DamageSource getDamageSource() {
 		return new EntityDamageSource("mob", this);
 	}
+	
+	protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+    }
+	
+	protected boolean canTriggerWalking()
+    {
+        return false;
+    }
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return null;
+		return InitSounds.ghostbreathe;
 	}
 
 	@Override
@@ -240,6 +282,10 @@ public class EntityShadowWarrior extends EntityMob {
 	public void setShieldOut(boolean swingingArms) {
 		this.dataManager.set(SHIELD_OUT, Boolean.valueOf(swingingArms));
 	}
+	
+	private boolean isFullDay(World world) {
+		return world.getSkylightSubtracted() < 6;
+	}
 
 	static class AIAttack extends EntityAIAttackMelee {
 		public AIAttack(EntityShadowWarrior infected) {
@@ -259,7 +305,7 @@ public class EntityShadowWarrior extends EntityMob {
 		}
 
 		protected double getAttackReachSqr(EntityLivingBase attackTarget) {
-			return (double) (2.0F + attackTarget.width);
+			return (double) (4.0F + attackTarget.width);
 		}
 	}
 }

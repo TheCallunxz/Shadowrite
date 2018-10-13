@@ -15,7 +15,7 @@ import net.minecraft.world.storage.WorldSavedData;
 public class WorldDataShadowrite extends WorldSavedData {
 	private static final String IDENTIFIER = "thecallunxzshadowrite";
 
-	private boolean inEvent = false;
+	private boolean daylightReset = true;
 	private boolean shadowsReleased = false;
 	
 	public WorldDataShadowrite() {
@@ -37,13 +37,13 @@ public class WorldDataShadowrite extends WorldSavedData {
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
-		inEvent = nbt.getBoolean("inEvent");
+		daylightReset = nbt.getBoolean("daylightReset");
 		shadowsReleased = nbt.getBoolean("shadowsReleased");
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-		nbt.setBoolean("inEvent", inEvent);
+		nbt.setBoolean("daylightReset", daylightReset);
 		nbt.setBoolean("shadowsReleased", shadowsReleased);
 		return nbt;
 	}
@@ -57,12 +57,12 @@ public class WorldDataShadowrite extends WorldSavedData {
 		markDirty();
 	}
 
-	public boolean isInEvent() {
-		return inEvent;
+	public boolean hasDaylightReset() {
+		return daylightReset;
 	}
 
-	public void setInEvent(boolean inEvent) {
-		this.inEvent = inEvent;
+	public void setDaylightReset(boolean inEvent) {
+		this.daylightReset = inEvent;
 		markDirty();
 	}
 }

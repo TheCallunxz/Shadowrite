@@ -19,7 +19,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.thecallunxz.shadowrite.Reference;
-import net.thecallunxz.shadowrite.events.ClientEventHandler;
 import net.thecallunxz.shadowrite.init.InitEntities;
 import paulscode.sound.SoundSystemConfig;
 
@@ -28,8 +27,6 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void preInit(final FMLPreInitializationEvent e) {
         super.preInit(e);
-        
-        MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
         
         InitEntities.initModels();
         

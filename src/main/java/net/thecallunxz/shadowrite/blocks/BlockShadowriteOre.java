@@ -100,7 +100,7 @@ public class BlockShadowriteOre extends BlockBase {
 		super.harvestBlock(worldIn, player, pos, state, te, stack);
 		worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
 		EntityFloatingItem itemFloat = new EntityFloatingItem(worldIn, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, new ItemStack(InitItems.shadowrite_singularity));
-		itemFloat.setPickupDelay(60);
+		itemFloat.setPickupDelay(20);
 		worldIn.spawnEntity(itemFloat);
 		
 		WorldDataShadowrite data = WorldDataShadowrite.get(worldIn);

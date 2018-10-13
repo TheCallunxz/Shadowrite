@@ -15,14 +15,10 @@ import net.thecallunxz.shadowrite.entities.EntityFloatingItem;
 
 public class ItemFloating extends ItemBase {
 
-	public ItemFloating(String name) {
+	public double scaleSize;
+	
+	public ItemFloating(String name, double scaleSize) {
 		super(name);
+		this.scaleSize = scaleSize; 
 	}
-
-	@Nullable
-    public Entity createEntity(World world, Entity location, ItemStack itemstack)
-    {
-		System.out.println("WORKING");
-        return new EntityFloatingItem(world, location.posX, location.posY, location.posZ, itemstack);
-    }
 }
