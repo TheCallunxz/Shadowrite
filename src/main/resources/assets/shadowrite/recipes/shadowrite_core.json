@@ -1,0 +1,22 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "XLX",
+    "XOX",
+    "XLX"
+  ],
+  "key": {
+    "X": {
+      "item": "shadowrite:shadow_cloth"
+    },
+	"L": {
+      "item": "shadowrite:shadowrite_gem"
+    },
+	"O": {
+      "item": "shadowrite:shadowrite_singularity"
+    }
+  },
+  "result": {
+    "item": "shadowrite:shadowrite_core"
+  }
+}

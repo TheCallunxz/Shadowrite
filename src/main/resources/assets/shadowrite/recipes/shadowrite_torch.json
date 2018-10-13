@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "X",
+    "#",
+    "#"
+  ],
+  "key": {
+    "#": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "X": {
+      "item": "shadowrite:shadowrite_singularity"
+    }
+  },
+  "result": {
+    "item": "shadowrite:shadowrite_torch"
+  }
+}
