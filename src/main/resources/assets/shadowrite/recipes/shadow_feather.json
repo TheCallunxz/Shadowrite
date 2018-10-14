@@ -1,0 +1,18 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "X",
+    "L"
+  ],
+  "key": {
+    "X": {
+      "item": "shadowrite:shadowrite_core"
+    },
+	"L": {
+      "item": "minecraft:feather"
+    }
+  },
+  "result": {
+    "item": "shadowrite:shadow_feather"
+  }
+}

@@ -17,53 +17,37 @@ import net.thecallunxz.shadowrite.networking.ShadowritePacket;
 import net.thecallunxz.shadowrite.networking.server.ShadowJumpServer;
 import net.thecallunxz.shadowrite.util.ShadowClientUtil;
 
-public class ItemShadowBottle extends ItemBase {
+public class ItemShadowFeather extends ItemBase {
 
-	public ItemShadowBottle(String name) {
+	public ItemShadowFeather(String name) {
 		super(name);
 		this.maxStackSize = 1;
-		this.setMaxDamage(1000);
 	}
 	
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add(new TextComponentTranslation("tooltip.shadowbottle").getFormattedText());
+		tooltip.add(new TextComponentTranslation("tooltip.shadowfeather").getFormattedText());
     }
-	
+
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if(entityIn.onGround) {
-			stack.setItemDamage(0);
-		}
-		
-		if(worldIn.isRemote) {
-			if(entityIn instanceof EntityPlayer) {
-				EntityPlayer player = (EntityPlayer) entityIn;
-				if(itemSlot < 9) {
-					boolean first = true;
-					for(int i = 0; i < itemSlot; i++) {
-						if(player.inventory.getStackInSlot(i).getItem() == InitItems.shadow_bottle) {
-							if(player.inventory.getStackInSlot(i).getItemDamage() == 0) {
-								first = false;
-								break;
-							}
-						}
-					}
-					
-					if(stack.getItemDamage() != 0) {
+		if(entityIn instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) entityIn;
+			if(itemSlot < 9) {
+				boolean first = true;
+				for(int i = 0; i < itemSlot; i++) {
+					if(player.inventory.getStackInSlot(i).getItem() == InitItems.shadow_feather) {
 						first = false;
+						break;
 					}
-					
-					if(first) {
-						if(ShadowClientUtil.checkJumpWithoutSneak() && (!player.onGround)) {
-							ShadowritePacket.INSTANCE.sendToServer(new ShadowJumpServer(itemSlot));
-							stack.setItemDamage(999);
-							player.onGround = false;
-							player.motionY = 0.6D;
-							player.fallDistance = -1;
-						}
+				}
+				
+				if(first) {
+					if(player.motionY < 0.0D && !player.onGround && player.isSneaking() && !player.isCreative()) {
+						player.motionY *= 0.5D;
 					}
+					player.fallDistance = 0;
 				}
 			}
 		}
@@ -72,4 +56,5 @@ public class ItemShadowBottle extends ItemBase {
 	public boolean hasEffect(ItemStack stack) {
 		return true;
 	}
+	
 }

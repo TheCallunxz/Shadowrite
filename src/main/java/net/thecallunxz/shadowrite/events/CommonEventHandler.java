@@ -95,7 +95,7 @@ public class CommonEventHandler {
 			if(!data.isShadowsReleased()) {
 				event.setResult(Result.DENY);
 			}else if(event.getWorld().getCurrentMoonPhaseFactor() != 0 && !flag && !flag1){
-				if(event.getWorld().rand.nextInt(5) != 0) {
+				if(event.getWorld().rand.nextInt(20) != 0) {
 					event.setResult(Result.DENY);
 				}
 			}

@@ -24,12 +24,20 @@ import net.thecallunxz.shadowrite.events.CommonEventHandler;
 import net.thecallunxz.shadowrite.init.InitBlocks;
 import net.thecallunxz.shadowrite.init.InitEntities;
 import net.thecallunxz.shadowrite.init.InitLootTables;
+import net.thecallunxz.shadowrite.networking.ShadowritePacket;
+import net.thecallunxz.shadowrite.networking.client.ShadowJumpClient;
+import net.thecallunxz.shadowrite.networking.server.ShadowJumpServer;
+import net.thecallunxz.shadowrite.world.WorldGenShadowriteOre;
 
 public class CommonProxy {
 	
 	
 	
 	public void preInit(final FMLPreInitializationEvent e) {
+		
+		ShadowritePacket.INSTANCE.registerMessage(ShadowJumpServer.Handler.class, ShadowJumpServer.class, 0, Side.SERVER);
+		ShadowritePacket.INSTANCE.registerMessage(ShadowJumpClient.Handler.class, ShadowJumpClient.class, 1, Side.CLIENT);
+		
         MinecraftForge.EVENT_BUS.register(new CommonEventHandler());
         InitLootTables.register(); 
         InitBlocks.registerTileEntities();
@@ -37,7 +45,7 @@ public class CommonProxy {
     }
 
     public void init(final FMLInitializationEvent e) {
-    	
+    	GameRegistry.registerWorldGenerator(new WorldGenShadowriteOre(), 0);
     }
 
 

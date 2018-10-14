@@ -53,7 +53,7 @@ public class BlockShadowriteOre extends BlockBase {
     {
 		if (rand.nextInt(10) == 0)
         {
-            worldIn.playSound((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), InitSounds.whisper, SoundCategory.BLOCKS, 0.5F, rand.nextFloat() * 0.4F + 0.2F, false);
+            worldIn.playSound((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), InitSounds.whisper, SoundCategory.BLOCKS, 0.1F, rand.nextFloat() * 0.4F + 0.2F, false);
         }
 
 		for (int i = 0; i < 3; ++i)

@@ -15,6 +15,7 @@ public final class InitSounds {
 	
 	public static final SoundEvent whisper = register("whisper");
 	public static final SoundEvent ghostbreathe = register("ghostbreathe");
+	public static final SoundEvent shadowjump = register("shadowjump");
 	
 	public static SoundEvent register(String name) {
 		final ResourceLocation loc = new ResourceLocation(Reference.MOD_ID, name);
@@ -30,6 +31,7 @@ public final class InitSounds {
 			final SoundEvent[] sounds = {
 					whisper,
 					ghostbreathe,
+					shadowjump,
 			};
 
 			registry.registerAll(sounds);

@@ -15,6 +15,8 @@ import net.thecallunxz.shadowrite.Reference;
 import net.thecallunxz.shadowrite.blocks.BlockShadowriteOre;
 import net.thecallunxz.shadowrite.items.ItemBase;
 import net.thecallunxz.shadowrite.items.ItemFloating;
+import net.thecallunxz.shadowrite.items.ItemShadowBottle;
+import net.thecallunxz.shadowrite.items.ItemShadowFeather;
 import net.thecallunxz.shadowrite.items.ItemShadowriteTorch;
 
 @ObjectHolder(Reference.MOD_ID)
@@ -24,6 +26,8 @@ public class InitItems {
 	public static final ItemBase shadow_fabric = new ItemBase("shadow_fabric");
 	public static final ItemBase shadow_cloth = new ItemBase("shadow_cloth");
 	public static final ItemShadowriteTorch shadowrite_torch = new ItemShadowriteTorch("shadowrite_torch");
+	public static final ItemShadowBottle shadow_bottle = new ItemShadowBottle("shadow_bottle");
+	public static final ItemShadowFeather shadow_feather = new ItemShadowFeather("shadow_feather");
 	public static final ItemFloating shadowrite_gem = new ItemFloating("shadowrite_gem", 1D);
 	public static final ItemFloating shadowrite_core = new ItemFloating("shadowrite_core", 1D);
 	
@@ -35,6 +39,8 @@ public class InitItems {
 		public static void registerItems(final RegistryEvent.Register<Item> event) {
 			
 			final Item[] items = {
+					shadow_feather,
+					shadow_bottle,
 					shadowrite_singularity,
 					shadowrite_torch,
 					shadow_fabric,

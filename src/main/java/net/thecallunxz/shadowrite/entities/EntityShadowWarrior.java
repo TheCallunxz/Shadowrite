@@ -115,6 +115,10 @@ public class EntityShadowWarrior extends EntityMob {
 		this.dataManager.register(WARRIORTIER, Integer.valueOf(0));
 	}
 	
+	protected float getSoundVolume() {
+	    return 0.75F;
+	}
+	
 	public void onLivingUpdate()
     {
 		if (isFullDay(this.world) && !this.world.isRemote)
@@ -209,7 +213,7 @@ public class EntityShadowWarrior extends EntityMob {
     		this.world.playSound((EntityPlayer)null, this.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.HOSTILE, 1F, 1F);
     		if(!this.world.isRemote) {
     			if(this.getAttackTarget() != null) {
-    				if(world.rand.nextInt(3) == 0 && !(this.getAttackTarget().getHeldItemMainhand().getItem() instanceof ItemBow)) {
+    				if(world.rand.nextInt(4) == 0 && !(this.getAttackTarget().getHeldItemMainhand().getItem() instanceof ItemBow)) {
             			this.setShieldOut(false);
             			this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
             			this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(0D);
