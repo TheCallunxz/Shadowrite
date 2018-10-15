@@ -54,7 +54,7 @@ public class CommonEventHandler {
 	
 	@SubscribeEvent
 	public void onWorldTick(WorldTickEvent event) {
-		if(!event.world.isRemote) {
+		if(!event.world.isRemote && event.world.provider.getDimension() == 0) {
 			WorldDataShadowrite data = WorldDataShadowrite.get(event.world);
 			if(data.hasDaylightReset()) {
 				if(!isFullDay(event.world)) {
@@ -94,7 +94,7 @@ public class CommonEventHandler {
 			
 			if(!data.isShadowsReleased()) {
 				event.setResult(Result.DENY);
-			}else if(event.getWorld().getCurrentMoonPhaseFactor() != 0 && !flag && !flag1){
+			}else if((event.getWorld().getCurrentMoonPhaseFactor() != 0  || event.getWorld().provider.getDimension() != 0) && !flag && !flag1 ){
 				if(event.getWorld().rand.nextInt(20) != 0) {
 					event.setResult(Result.DENY);
 				}
