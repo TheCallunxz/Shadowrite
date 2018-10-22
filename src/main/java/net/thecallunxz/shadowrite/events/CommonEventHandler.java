@@ -61,9 +61,7 @@ public class CommonEventHandler {
 					if(event.world.getCurrentMoonPhaseFactor() == 0 && data.isShadowsReleased()) {
 						data.setDaylightReset(false);
 						for(EntityPlayer messagedPlayer : event.world.playerEntities) {
-							messagedPlayer.sendMessage(new TextComponentTranslation("message.player.darkmoon").setStyle((new Style()).setObfuscated(true).setColor(TextFormatting.BLACK)));
-							messagedPlayer.sendMessage(new TextComponentTranslation("message.player.darkmoon").setStyle((new Style()).setColor(TextFormatting.RED)));
-							messagedPlayer.sendMessage(new TextComponentTranslation("message.player.darkmoon").setStyle((new Style()).setObfuscated(true).setColor(TextFormatting.BLACK)));
+							messagedPlayer.sendStatusMessage(new TextComponentTranslation("message.player.darkmoon").setStyle((new Style()).setColor(TextFormatting.RED)), true);
 						}
 					}
 				}
@@ -95,7 +93,7 @@ public class CommonEventHandler {
 			if(!data.isShadowsReleased()) {
 				event.setResult(Result.DENY);
 			}else if((event.getWorld().getCurrentMoonPhaseFactor() != 0  || event.getWorld().provider.getDimension() != 0) && !flag && !flag1 ){
-				if(event.getWorld().rand.nextInt(20) != 0) {
+				if(event.getWorld().rand.nextInt(25) != 0) {
 					event.setResult(Result.DENY);
 				}
 			}

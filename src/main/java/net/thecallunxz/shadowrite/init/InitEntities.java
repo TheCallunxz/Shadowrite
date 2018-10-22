@@ -33,7 +33,7 @@ public class InitEntities {
 		Biome[] biomes = new Biome[biomesList.size()];
 		biomes = biomesList.toArray(biomes);
 		
-		EntityRegistry.addSpawn(EntityShadowWarrior.class, 500, 1, 1, EnumCreatureType.MONSTER, biomes);
+		EntityRegistry.addSpawn(EntityShadowWarrior.class, 250, 1, 1, EnumCreatureType.MONSTER, biomes);
     }
 	
 	@SideOnly(Side.CLIENT)

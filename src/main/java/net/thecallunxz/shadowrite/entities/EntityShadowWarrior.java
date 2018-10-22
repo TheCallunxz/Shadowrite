@@ -103,10 +103,10 @@ public class EntityShadowWarrior extends EntityMob {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20D);
+		this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(15D);
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4D);
-		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(50D);
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(2D);
+		this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(30D);
 	}
 
 	protected void entityInit() {
@@ -208,7 +208,7 @@ public class EntityShadowWarrior extends EntityMob {
     }
     
     public boolean attackEntityFrom(DamageSource source, float amount)
-    {
+    {	
     	if(isShieldOut()) {
     		this.world.playSound((EntityPlayer)null, this.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.HOSTILE, 1F, 1F);
     		if(!this.world.isRemote) {
@@ -225,7 +225,7 @@ public class EntityShadowWarrior extends EntityMob {
     	
         if (super.attackEntityFrom(source, amount))
         {
-        	if(!isShieldOut() && this.getHeldItemOffhand().getItem() instanceof ItemShield) {
+        	if(!isShieldOut() && this.getHeldItemOffhand().getItem() instanceof ItemShield && this.getAttackTarget() != null) {
         		this.setShieldOut(true);
         		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
         		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1D);
@@ -309,7 +309,7 @@ public class EntityShadowWarrior extends EntityMob {
 		}
 
 		protected double getAttackReachSqr(EntityLivingBase attackTarget) {
-			return (double) (4.0F + attackTarget.width);
+			return (double) (3.5F + attackTarget.width);
 		}
 	}
 }

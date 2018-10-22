@@ -107,9 +107,7 @@ public class BlockShadowriteOre extends BlockBase {
 		if(!data.isShadowsReleased()) {
 			data.setShadowsReleased(true);
 			for(EntityPlayer messagedPlayer : worldIn.playerEntities) {
-				messagedPlayer.sendMessage(new TextComponentTranslation("message.player.shadowsreleased").setStyle((new Style()).setObfuscated(true).setColor(TextFormatting.BLACK)));
-				messagedPlayer.sendMessage(new TextComponentTranslation("message.player.shadowsreleased").setStyle((new Style()).setColor(TextFormatting.RED)));
-				messagedPlayer.sendMessage(new TextComponentTranslation("message.player.shadowsreleased").setStyle((new Style()).setObfuscated(true).setColor(TextFormatting.BLACK)));
+				messagedPlayer.sendStatusMessage(new TextComponentTranslation("message.player.shadowsreleased").setStyle((new Style()).setColor(TextFormatting.RED)), true);
 			}
 		}
     }
