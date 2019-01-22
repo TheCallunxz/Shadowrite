@@ -1,2 +1,2 @@
 # Shadowrite
-A spookyjam mod
+A spookyjam mod by TheCallunxz
