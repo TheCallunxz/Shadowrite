@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIAttackMelee;
@@ -99,6 +100,12 @@ public class EntityShadowWarrior extends EntityMob {
 		this.setEnchantmentBasedOnDifficulty(difficulty);
 		return livingdata;
     }
+	
+	@Override
+	public EnumCreatureAttribute getCreatureAttribute()
+    {
+        return EnumCreatureAttribute.UNDEAD;
+    }
 
 	@Override
 	protected void applyEntityAttributes() {
@@ -121,7 +128,7 @@ public class EntityShadowWarrior extends EntityMob {
 	
 	public void onLivingUpdate()
     {
-		if (isFullDay(this.world) && !this.world.isRemote)
+		if (isFullDay(this.world) && !this.world.isRemote && !this.isNoDespawnRequired())
         {
 			this.setDead();
         }
@@ -209,7 +216,7 @@ public class EntityShadowWarrior extends EntityMob {
     
     public boolean attackEntityFrom(DamageSource source, float amount)
     {	
-    	if(isShieldOut()) {
+    	if(isShieldOut() && !source.isUnblockable()) {
     		this.world.playSound((EntityPlayer)null, this.getPosition(), SoundEvents.ITEM_SHIELD_BLOCK, SoundCategory.HOSTILE, 1F, 1F);
     		if(!this.world.isRemote) {
     			if(this.getAttackTarget() != null) {
@@ -225,8 +232,10 @@ public class EntityShadowWarrior extends EntityMob {
     	
         if (super.attackEntityFrom(source, amount))
         {
-        	if(!isShieldOut() && this.getHeldItemOffhand().getItem() instanceof ItemShield && this.getAttackTarget() != null) {
-        		this.setShieldOut(true);
+        	if((!isShieldOut() || source.isUnblockable()) && this.getHeldItemOffhand().getItem() instanceof ItemShield && this.getAttackTarget() != null) {
+        		if(!source.isUnblockable()) {
+        			this.setShieldOut(true);
+        		}
         		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.15D);
         		this.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).setBaseValue(1D);
         	}

@@ -31,4 +31,10 @@ public class ItemBase extends Item implements ItemModelProvider {
 		super.setCreativeTab(tab);
 		return this;
 	}
+	
+	@Override
+	public int getItemEnchantability()
+    {
+        return 0;
+    }
 }

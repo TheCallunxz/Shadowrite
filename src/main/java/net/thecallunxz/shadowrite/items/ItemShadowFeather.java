@@ -47,7 +47,7 @@ public class ItemShadowFeather extends ItemBase {
 					if(player.motionY < 0.0D && !player.onGround && player.isSneaking() && !player.capabilities.isFlying) {
 						player.motionY *= 0.5D;
 					}
-					player.fallDistance = 0;
+					player.fallDistance = Math.min(1, player.fallDistance);
 				}
 			}
 		}
